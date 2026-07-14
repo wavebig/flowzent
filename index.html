@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowzent — AI agents that run your workflows</title>
+<meta name="description" content="Flowzent connects your everyday tools and lets AI agents carry out multi-step tasks on their own — with full visibility into every run.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F5F4EF;
+    --bg-panel: #EDEBE2;
+    --ink: #191B20;
+    --ink-soft: #52565F;
+    --line: #D8D5C9;
+    --accent: #3654E0;
+    --accent-soft: #E8ECFC;
+    --signal: #E8A415;
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.01em;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+  @media (max-width:640px){.wrap{padding:0 20px;}}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,244,239,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;}
+  .logo{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;}
+  .logo-mark{width:22px;height:22px;flex-shrink:0;}
+  .nav-links{display:flex;gap:32px;font-size:14px;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{
+    background:var(--ink);color:var(--bg);
+    padding:9px 18px;border-radius:8px;font-size:14px;font-weight:500;
+  }
+  .nav-cta:hover{background:var(--accent);}
+  @media (max-width:760px){.nav-links{display:none;}}
+
+  /* HERO */
+  .hero{padding:96px 0 64px;position:relative;overflow:hidden;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
+    color:var(--accent);background:var(--accent-soft);
+    padding:6px 12px;border-radius:100px;margin-bottom:24px;
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .hero h1{
+    font-size:clamp(38px,5.6vw,64px);
+    line-height:1.05;max-width:820px;margin-bottom:24px;
+  }
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero p.sub{
+    font-size:19px;color:var(--ink-soft);max-width:560px;margin-bottom:36px;
+  }
+  .hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:72px;}
+  .btn-primary{
+    background:var(--ink);color:var(--bg);
+    padding:14px 26px;border-radius:9px;font-weight:500;font-size:15px;
+    display:inline-block;transition:background .15s ease;
+  }
+  .btn-primary:hover{background:var(--accent);}
+  .btn-secondary{
+    padding:14px 22px;border-radius:9px;font-weight:500;font-size:15px;
+    border:1px solid var(--line);color:var(--ink);
+    display:inline-block;transition:border-color .15s ease;
+  }
+  .btn-secondary:hover{border-color:var(--ink);}
+
+  /* DIAGRAM */
+  .diagram-panel{
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--bg-panel);padding:8px;
+  }
+  .diagram-panel svg{display:block;width:100%;height:auto;}
+  .node-label{font-family:'JetBrains Mono',monospace;font-size:11px;fill:var(--ink-soft);}
+  .node-title{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;fill:var(--ink);}
+  .flow-dot{fill:var(--accent);}
+  .flow-line{stroke:var(--line);stroke-width:2;fill:none;}
+  .node-box{fill:var(--bg);stroke:var(--line);stroke-width:1.5;}
+  .node-box.active{stroke:var(--accent);}
+
+  /* SECTION HEADS */
+  .section{padding:88px 0;border-top:1px solid var(--line);}
+  .section-head{max-width:600px;margin-bottom:56px;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;
+    color:var(--ink-soft);text-transform:uppercase;margin-bottom:14px;display:block;
+  }
+  .section-head h2{font-size:clamp(28px,3.4vw,38px);margin-bottom:14px;}
+  .section-head p{color:var(--ink-soft);font-size:16px;}
+
+  /* FEATURES */
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .feature-card{background:var(--bg);padding:32px 28px;}
+  .feature-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);margin-bottom:18px;display:block;}
+  .feature-card h3{font-size:19px;margin-bottom:10px;}
+  .feature-card p{font-size:14.5px;color:var(--ink-soft);}
+  @media (max-width:760px){.features-grid{grid-template-columns:1fr;}}
+
+  /* CONNECT CATEGORIES */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+  .chip{
+    border:1px solid var(--line);background:var(--bg);
+    padding:9px 16px;border-radius:100px;font-size:13.5px;color:var(--ink-soft);
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* HOW IT WORKS */
+  .steps{display:flex;flex-direction:column;gap:0;}
+  .step{
+    display:grid;grid-template-columns:64px 1fr;gap:24px;
+    padding:28px 0;border-top:1px solid var(--line);
+  }
+  .step:first-child{border-top:none;}
+  .step-index{font-family:'JetBrains Mono',monospace;color:var(--accent);font-size:14px;padding-top:2px;}
+  .step h3{font-size:18px;margin-bottom:6px;}
+  .step p{color:var(--ink-soft);font-size:14.5px;max-width:520px;}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .price-card{
+    border:1px solid var(--line);border-radius:var(--radius);padding:32px;background:var(--bg);
+  }
+  .price-card.pro{border-color:var(--ink);background:var(--ink);color:var(--bg);}
+  .price-card.pro .ink-soft{color:#B8BAC2;}
+  .plan-name{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16px;display:block;}
+  .price{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;margin-bottom:4px;}
+  .price span{font-size:15px;font-weight:400;color:var(--ink-soft);}
+  .price-card.pro .price span{color:#B8BAC2;}
+  .plan-desc{font-size:14px;color:var(--ink-soft);margin-bottom:24px;}
+  .plan-features{list-style:none;margin-bottom:28px;}
+  .plan-features li{
+    font-size:14px;padding:9px 0;border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:10px;
+  }
+  .price-card.pro .plan-features li{border-top:1px solid #33353D;}
+  .plan-features li::before{content:'—';color:var(--accent);flex-shrink:0;}
+  .price-card.pro .plan-features li::before{color:var(--signal);}
+  .plan-btn{
+    display:block;text-align:center;padding:12px;border-radius:8px;
+    border:1px solid var(--ink);font-size:14.5px;font-weight:500;
+  }
+  .price-card.pro .plan-btn{border-color:var(--bg);background:var(--bg);color:var(--ink);}
+  @media (max-width:700px){.pricing-grid{grid-template-columns:1fr;}}
+
+  /* FAQ-ish limits note */
+  .note{
+    margin-top:24px;font-size:13px;color:var(--ink-soft);
+    border-left:2px solid var(--line);padding-left:14px;
+  }
+
+  /* CTA BAND */
+  .cta-band{
+    background:var(--ink);color:var(--bg);border-radius:var(--radius);
+    padding:56px 48px;text-align:center;margin:0 auto;
+  }
+  .cta-band h2{color:var(--bg);font-size:clamp(24px,3vw,32px);margin-bottom:12px;}
+  .cta-band p{color:#AEB0B8;margin-bottom:28px;font-size:15px;}
+  .cta-band .btn-primary{background:var(--accent);}
+  .cta-band .btn-primary:hover{background:#4A63E8;}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line);padding:48px 0 32px;}
+  .footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;margin-bottom:40px;}
+  .footer-links{display:flex;gap:28px;font-size:14px;color:var(--ink-soft);flex-wrap:wrap;}
+  .footer-links a:hover{color:var(--ink);}
+  .footer-bottom{font-size:13px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+
+  /* MODAL / WAITLIST FORM */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(25,27,32,0.5);
+    display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--bg);border-radius:var(--radius);padding:36px;max-width:420px;width:100%;
+    border:1px solid var(--line);
+  }
+  .modal h3{font-size:22px;margin-bottom:8px;}
+  .modal p{font-size:14px;color:var(--ink-soft);margin-bottom:22px;}
+  .modal input{
+    width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:8px;
+    font-size:14px;margin-bottom:12px;font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);
+  }
+  .modal input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .modal-actions{display:flex;gap:10px;margin-top:6px;}
+  .modal-close{
+    padding:12px 18px;border-radius:8px;border:1px solid var(--line);font-size:14px;background:none;color:var(--ink);cursor:pointer;
+  }
+  .modal-submit{
+    flex:1;padding:12px 18px;border-radius:8px;border:none;background:var(--ink);color:var(--bg);
+    font-size:14px;font-weight:500;cursor:pointer;
+  }
+  .modal-submit:hover{background:var(--accent);}
+  .modal-success{font-size:14px;color:var(--accent);display:none;margin-top:10px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="1" width="8" height="8" rx="2" stroke="#191B20" stroke-width="1.6"/>
+        <rect x="13" y="1" width="8" height="8" rx="2" fill="#3654E0"/>
+        <rect x="7" y="13" width="8" height="8" rx="2" stroke="#191B20" stroke-width="1.6"/>
+        <path d="M9 5H13" stroke="#191B20" stroke-width="1.6"/>
+        <path d="M11 9V13" stroke="#191B20" stroke-width="1.6"/>
+      </svg>
+      Flowzent
+    </div>
+    <div class="nav-links">
+      <a href="#features">Product</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#" class="nav-cta" onclick="openModal();return false;">Get started</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Now in early access</span>
+    <h1>Give your busywork <em>to an agent</em> that actually finishes it.</h1>
+    <p class="sub">Flowzent connects the tools you already use and lets AI agents carry out multi-step tasks end to end — while you keep a clear record of exactly what ran and why.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn-primary" onclick="openModal();return false;">Join the waitlist</a>
+      <a href="#how" class="btn-secondary">See how it works</a>
+    </div>
+
+    <div class="diagram-panel">
+      <svg viewBox="0 0 1040 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of a task moving through trigger, agent, tool, and done stages">
+        <!-- connecting lines -->
+        <path class="flow-line" d="M170,110 H320" />
+        <path class="flow-line" d="M470,110 H620" />
+        <path class="flow-line" d="M770,110 H920" />
+
+        <!-- moving dot 1 -->
+        <circle class="flow-dot" r="4" >
+          <animateMotion dur="3.2s" repeatCount="indefinite" path="M170,110 H320" />
+        </circle>
+        <circle class="flow-dot" r="4">
+          <animateMotion dur="3.2s" begin="0.8s" repeatCount="indefinite" path="M470,110 H620" />
+        </circle>
+        <circle class="flow-dot" r="4">
+          <animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite" path="M770,110 H920" />
+        </circle>
+
+        <!-- node 1: Trigger -->
+        <rect class="node-box" x="30" y="70" width="140" height="80" rx="10"/>
+        <text class="node-label" x="50" y="98">01 · TRIGGER</text>
+        <text class="node-title" x="50" y="122">New form entry</text>
+
+        <!-- node 2: Agent -->
+        <rect class="node-box active" x="330" y="60" width="140" height="100" rx="10"/>
+        <text class="node-label" x="350" y="88" fill="#3654E0">02 · AGENT</text>
+        <text class="node-title" x="350" y="112">Reads &amp; plans</text>
+        <text class="node-label" x="350" y="132">3 steps queued</text>
+
+        <!-- node 3: Tool call -->
+        <rect class="node-box" x="630" y="70" width="140" height="80" rx="10"/>
+        <text class="node-label" x="650" y="98">03 · ACTION</text>
+        <text class="node-title" x="650" y="122">Updates sheet</text>
+
+        <!-- node 4: Done -->
+        <rect class="node-box" x="930" y="70" width="90" height="80" rx="10"/>
+        <text class="node-label" x="948" y="98">04 · DONE</text>
+        <circle cx="975" cy="118" r="5" fill="#E8A415"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">What it does</span>
+      <h2>Agents that plan, act, and show their work.</h2>
+      <p>Flowzent isn't a chat window. It's a place where a task goes in, an agent breaks it into steps, and each step gets carried out against the tools you've connected.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-num">01</span>
+        <h3>Connect what you use</h3>
+        <p>Link your calendar, inbox, documents, and spreadsheets once. Flowzent reads and writes to them the way you would, just faster.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-num">02</span>
+        <h3>Describe the outcome</h3>
+        <p>Tell an agent what you need done, not how to do it. It breaks the task into an ordered sequence of steps before touching anything.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-num">03</span>
+        <h3>Watch every run</h3>
+        <p>Every action an agent takes is logged in plain language. Pause, approve, or roll back any step before it goes further.</p>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">Calendars</span>
+      <span class="chip">Email</span>
+      <span class="chip">Spreadsheets</span>
+      <span class="chip">Documents</span>
+      <span class="chip">Messaging</span>
+      <span class="chip">Forms</span>
+    </div>
+    <p class="note">Flowzent is in early access. Tool connections are rolling out gradually — join the waitlist to be notified as your tools become available.</p>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">How it works</span>
+      <h2>From task to done, in three moves.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-index">01</span>
+        <div>
+          <h3>Set a trigger</h3>
+          <p>Choose what starts the work: a new message, a form submission, a schedule, or a manual request.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">02</span>
+        <div>
+          <h3>The agent plans the steps</h3>
+          <p>It maps out what needs to happen and in what order, so you can see the plan before anything runs.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-index">03</span>
+        <div>
+          <h3>Steps execute, and you're kept in the loop</h3>
+          <p>Each action is carried out against your connected tools, with a run log you can check at any time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Pricing</span>
+      <h2>Start free. Scale when it earns its keep.</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <span class="plan-name">Free</span>
+        <div class="price">$0</div>
+        <p class="plan-desc">For trying Flowzent on a single workflow.</p>
+        <ul class="plan-features">
+          <li>100 agent runs / month</li>
+          <li>1 connected tool category</li>
+          <li>Run history, last 7 days</li>
+        </ul>
+        <a href="#" class="plan-btn" onclick="openModal();return false;">Join the waitlist</a>
+      </div>
+      <div class="price-card pro">
+        <span class="plan-name">Pro</span>
+        <div class="price">$24<span>/month</span></div>
+        <p class="plan-desc ink-soft">For running Flowzent across your day-to-day work.</p>
+        <ul class="plan-features">
+          <li>Unlimited agent runs</li>
+          <li>All tool categories</li>
+          <li>Full run history &amp; rollback</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="plan-btn" onclick="openModal();return false;">Join the waitlist</a>
+      </div>
+    </div>
+    <p class="note">Pricing applies once Flowzent exits early access. Waitlist members keep early-access rates locked in.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Be first in line when agent access opens up.</h2>
+      <p>No spam. One email when your spot is ready.</p>
+      <a href="#" class="btn-primary" onclick="openModal();return false;">Join the waitlist</a>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="logo">
+        <svg class="logo-mark" viewBox="0 0 22 22" fill="none">
+          <rect x="1" y="1" width="8" height="8" rx="2" stroke="#191B20" stroke-width="1.6"/>
+          <rect x="13" y="1" width="8" height="8" rx="2" fill="#3654E0"/>
+          <rect x="7" y="13" width="8" height="8" rx="2" stroke="#191B20" stroke-width="1.6"/>
+          <path d="M9 5H13" stroke="#191B20" stroke-width="1.6"/>
+          <path d="M11 9V13" stroke="#191B20" stroke-width="1.6"/>
+        </svg>
+        Flowzent
+      </div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="mailto:hello@flowzent.xyz">hello@flowzent.xyz</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Flowzent. All rights reserved.</span>
+      <span class="mono">Built for people who'd rather review the result than do the task.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>Join the waitlist</h3>
+    <p>This opens your email app with a message ready to send to us — nothing is sent automatically.</p>
+    <input type="text" id="nameInput" placeholder="Your name (optional)">
+    <div class="modal-actions">
+      <button class="modal-close" onclick="closeModal()">Cancel</button>
+      <button class="modal-submit" onclick="submitEmail()">Continue to email</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(){
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function submitEmail(){
+  const name = document.getElementById('nameInput').value.trim();
+  const subject = encodeURIComponent('Waitlist signup — Flowzent');
+  const body = encodeURIComponent(
+    (name ? 'Name: ' + name + '\n' : '') + 'Please add me to the Flowzent early access waitlist.'
+  );
+  window.location.href = 'mailto:hello@flowzent.xyz?subject=' + subject + '&body=' + body;
+  closeModal();
+}
+document.getElementById('modalOverlay').addEventListener('click', function(e){
+  if(e.target === this) closeModal();
+});
+</script>
+
+</body>
+</html>
