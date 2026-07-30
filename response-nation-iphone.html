@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowZent Nexus: Direct Consumer Tech Reports</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            line-height: 1.8;
+            color: #334155;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+        }
+        
+        /* 1. 顶部 Slogan 标语条 */
+        .top-announcement {
+            background-color: #0f172a;
+            color: #94a3b8;
+            font-size: 12.5px;
+            padding: 7px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        .announcement-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .announcement-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        /* 动态绿色脉冲小点 */
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .announcement-text { color: #cbd5e1; }
+        .announcement-text strong { color: #38bdf8; }
+
+        /* 2. 主 Header (白底纯净风) */
+        .header-main {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+        }
+        .header-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* 精致 Modern Logo */
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .logo-brand {
+            display: flex;
+            flex-direction: column;
+        }
+        .logo-title {
+            font-weight: 700;
+            font-size: 21px;
+            letter-spacing: -0.6px;
+            color: #0f172a;
+            line-height: 1.1;
+        }
+        .logo-title span { color: #2563eb; }
+        .logo-sub {
+            font-size: 10px;
+            font-weight: 600;
+            color: #64748b;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .edition-badge {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .date-display {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        @media (max-width: 640px) {
+            .announcement-right { display: none; }
+            .edition-badge { display: none; }
+            .logo-title { font-size: 18px; }
+            .date-display { font-size: 12px; }
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 35px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+        }
+        
+        h1 { font-size: 28px; line-height: 1.35; margin-top: 0; color: #0f172a; font-weight: 700; letter-spacing: -0.5px; }
+        
+        .meta { 
+            font-size: 13.5px; 
+            color: #64748b; 
+            margin-bottom: 25px; 
+            border-bottom: 1px solid #f1f5f9; 
+            padding-bottom: 14px; 
+        }
+        .meta strong { color: #2563eb; }
+        
+        .hero-image-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .content { font-size: 16px; margin-bottom: 35px; color: #334155; }
+        .content p { margin-bottom: 18px; }
+        .content strong.brand-highlight { color: #1e3a8a; font-weight: 600; }
+        
+        .quiz-box {
+            border: 1px solid #cbd5e1;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: #f8fafc;
+        }
+        .question { font-size: 19px; font-weight: 600; margin-bottom: 20px; color: #1e293b; text-align: center; }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 320px;
+            margin: 12px auto;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #2563eb;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        }
+        .btn:hover { background-color: #1d4ed8; transform: translateY(-1px); }
+        .btn-reject { background-color: #94a3b8; box-shadow: none; }
+        .btn-reject:hover { background-color: #64748b; }
+        .btn-back { background-color: #ef4444; margin-top: 20px; box-shadow: none; }
+        .btn-back:hover { background-color: #dc2626; }
+        
+        .hidden { display: none; }
+        
+        .progress-container { width: 100%; background-color: #e2e8f0; border-radius: 10px; margin: 25px 0; height: 14px; overflow: hidden;}
+        .progress-bar { width: 0%; height: 100%; background-color: #2563eb; transition: width 2s ease-in-out; }
+        
+        .success-text { color: #059669; font-size: 22px; font-weight: 700; margin-bottom: 15px; text-align: center;}
+        .cta-btn { background-color: #10b981; text-decoration: none; display: flex; justify-content: center; align-items: center; padding: 16px 30px; font-size: 17px; margin-top: 20px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);}
+        .cta-btn:hover { background-color: #059669; color: #ffffff;}
+        .error-text { color: #dc2626; font-size: 17px; font-weight: 600; text-align: center;}
+        
+        .article-footer {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 20px 40px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .article-footer p { margin: 6px 0; }
+        .text-center { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 修改后的顶部 Slogan 标语条 -->
+    <div class="top-announcement">
+        <div class="announcement-container">
+            <div class="announcement-left">
+                <span class="live-dot"></span>
+                <span class="announcement-text"><strong>FLOWZENT NEXUS:</strong> Independent Tech Analysis & Consumer Hardware Insights</span>
+            </div>
+            <div class="announcement-right">
+                <span>UK Tech Desk · Updated Daily</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 主 Header -->
+    <div class="header-main">
+        <div class="header-container">
+            <div class="logo-wrap">
+                <div class="logo-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                </div>
+                <div class="logo-brand">
+                    <div class="logo-title">FlowZent <span>Nexus</span></div>
+                    <div class="logo-sub">UNITED KINGDOM</div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <span class="edition-badge">UK Edition</span>
+                <div class="date-display" id="current-date">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Why Major Tech Brands Are Shifting Ad Budgets Straight to British Consumers</h1>
+        
+        <div class="meta">By Oliver Vance | Published for <strong>FlowZent Nexus UK</strong></div>
+        
+        <div class="hero-image-container">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80" alt="Tech devices" class="hero-image">
+        </div>
+        
+        <div class="content">
+            <p>If you've noticed billboard ads becoming a bit sparse lately, you're not imagining things. Over the past few months, several major tech distributors have quietly shifted their quarterly marketing strategies across the UK.</p>
+            
+            <p>Instead of throwing millions at traditional media agencies, brands are trying a direct route: partnering with <strong class="brand-highlight">Response Nation UK</strong>, an independent consumer research panel, to place new hardware directly into the hands of everyday users for real-world feedback.</p>
+            
+            <p>As part of this ongoing trial, a limited batch of the newly released iPhone 17 has been allocated through Response Nation for UK readers willing to participate in a brief consumer opinion check.</p>
+            
+            <p><strong>Note:</strong> Due to high reader traffic from across the country, participation is structured on a rolling verification basis. You can check if your device qualifies below.</p>
+        </div>
+
+        <div class="quiz-box" id="quiz-container">
+            
+            <div id="step-1">
+                <div class="question">Quick Check (1/2): Are you currently based in the UK?</div>
+                <button class="btn" onclick="nextStep(2)">Yes, I am</button>
+                <button class="btn btn-reject" onclick="showError('Sorry, this specific feedback session is restricted to UK-based participants.')">No, I am not</button>
+            </div>
+
+            <div id="step-2" class="hidden">
+                <div class="question">Quick Check (2/2): Are you 18 or older?</div>
+                <button class="btn" onclick="processResults()">Yes, 18+</button>
+                <button class="btn btn-reject" onclick="showError('Sorry, participants must be at least 18 years of age.')">Under 18</button>
+            </div>
+
+            <div id="error-screen" class="hidden">
+                <div class="error-text" id="error-message"></div>
+                <button class="btn btn-back" onclick="resetQuiz()">← Back to Check</button>
+            </div>
+
+            <div id="processing-screen" class="hidden text-center">
+                <div class="question" style="margin-bottom: 5px;">Verifying reader session...</div>
+                <div style="font-size: 14px; color: #64748b;">Please do not refresh the page</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="p-bar"></div>
+                </div>
+            </div>
+
+            <div id="success-screen" class="hidden text-center">
+                <div class="success-text">Session Verified Successfully</div>
+                <p style="color: #475569; font-size: 15px; margin-bottom: 20px;">Your reader spot is temporarily held. Click below to connect with Response Nation UK, answer a few quick questions, and lock in your details.</p>
+                <a href="https://extload.com/?a=125208&c=420374" class="btn cta-btn">Proceed to Partner Portal →</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="article-footer">
+        <p><strong>Editorial Note:</strong> Featured coverage provided by FlowZent Nexus in collaboration with certified distribution partners. Content intended for UK regional audiences.</p>
+        <p>© 2026 FlowZent Nexus UK. All rights reserved. Managed under UK consumer data regulations.</p>
+    </div>
+
+    <script>
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-GB', dateOptions);
+
+        function nextStep(stepNumber) {
+            hideAllSteps();
+            document.getElementById('step-' + stepNumber).classList.remove('hidden');
+        }
+
+        function showError(message) {
+            hideAllSteps();
+            document.getElementById('error-message').innerText = message;
+            document.getElementById('error-screen').classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            hideAllSteps();
+            document.getElementById('step-1').classList.remove('hidden');
+        }
+
+        function processResults() {
+            hideAllSteps();
+            document.getElementById('processing-screen').classList.remove('hidden');
+            
+            document.getElementById('p-bar').style.width = '0%';
+            
+            setTimeout(() => {
+                document.getElementById('p-bar').style.width = '100%';
+            }, 50);
+
+            setTimeout(() => {
+                document.getElementById('processing-screen').classList.add('hidden');
+                document.getElementById('success-screen').classList.remove('hidden');
+            }, 2000);
+        }
+
+        function hideAllSteps() {
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('error-screen').classList.add('hidden');
+            document.getElementById('processing-screen').classList.add('hidden');
+            document.getElementById('success-screen').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
